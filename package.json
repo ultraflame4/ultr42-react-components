@@ -1,7 +1,7 @@
 {
   "name": "ultr42-react-components",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "description": "A collection of react components and tools I find useful",
