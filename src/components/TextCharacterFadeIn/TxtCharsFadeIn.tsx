@@ -42,6 +42,7 @@ export const TxtCharsFadeIn = defComponent<PropsTxtCharsFadeIn>((props, context)
     }
 
 
+    // @ts-ignore
     return <span  {...props} className={"txtchars_fadein "+props.className} ref={e}>
         {props.children}
     </span>
