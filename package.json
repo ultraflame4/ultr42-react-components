@@ -5,7 +5,14 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "description": "A collection of react components and tools I find useful",
-
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultraflame4/ultr42-react-components.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ultraflame4/ultr42-react-components/issues"
+  },
+  "homepage": "https://github.com/ultraflame4/ultr42-react-components/",
   "type": "module",
   "scripts": {
     "dev": "vite",
