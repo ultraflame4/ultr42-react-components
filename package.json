@@ -36,8 +36,6 @@
     "vite-plugin-dts": "^1.7.1"
   },
   "files": [
-    "lib/index.d.ts",
-    "lib/index.js",
-    "lib/components/**/*"
+    "lib"
   ]
 }
