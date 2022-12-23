@@ -12,7 +12,69 @@ function App() {
                 <b>Test</b>
             </TxtCharsFadeIn>
             <br/>
-            <TxtCharsFadeIn className={"test"} style={{animationDuration:"20s"}}>
+
+        </p>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <p>
+            <TxtCharsFadeIn className={"test"} style={{animationDuration:"20s"}} animateOnScroll={true}>
                 Hello World!███████████████████████████████████!███████████████████████████████████!███████████████████████████████████<br/>
                 <b>Te!███████████████████████████████████!███████████████████████████████████!███████████████████████████████████st</b>
             </TxtCharsFadeIn>
