@@ -1,0 +1,25 @@
+
+.txtchars_fadein{
+
+    --color: black;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    background-size: calc(200% + 4em) 100%;
+    background-image: linear-gradient(90deg, var(--color) calc(50% - 2em), transparent calc(50% + 2em));
+    background-position-x: 100%;
+    animation: fadein 1s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadein {
+    from{
+        background-position-x: 100%;
+    }
+    to{
+        background-position-x: 0%;
+    }
+}
