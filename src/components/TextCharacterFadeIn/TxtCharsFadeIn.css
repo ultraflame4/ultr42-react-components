@@ -5,7 +5,7 @@
 
     background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
     color: transparent;
 
     background-size: calc(200% + 4em) 100%;
