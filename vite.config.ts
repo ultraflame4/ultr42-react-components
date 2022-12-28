@@ -15,7 +15,7 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: path.resolve(__dirname, "src/components/index.ts"),
+            entry: path.resolve(__dirname, "src/index.ts"),
             name: "ultr42-react-components",
             formats: ['es', 'umd'],
             fileName: (format) => `ultr42-react-components.${format}.js`,
