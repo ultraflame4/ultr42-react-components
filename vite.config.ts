@@ -9,8 +9,8 @@ export default defineConfig({
         react(),
         dts({
             include: ['src/components'],
-            skipDiagnostics:false,
-            logDiagnostics:true
+            skipDiagnostics: false,
+            logDiagnostics: true
         }),
     ],
     build: {
@@ -20,7 +20,12 @@ export default defineConfig({
             formats: ['es', 'umd'],
             fileName: (format) => `ultr42-react-components.${format}.js`,
         },
-        outDir: "./lib"
-    },
+        outDir: "./lib",
+
+        rollupOptions: {
+            external: ["react", "react-dom"]
+        }
+
+    }
 
 })
