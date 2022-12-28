@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [
         react(),
         dts({
-            include: ['src/components'],
+            include: ['src/components',"src/index.ts"],
             skipDiagnostics: false,
             logDiagnostics: true
         }),
