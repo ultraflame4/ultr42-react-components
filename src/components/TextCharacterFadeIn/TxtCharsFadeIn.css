@@ -1,8 +1,6 @@
 
 .txtchars_fadein{
 
-    --color: black;
-
     background-clip: text;
     -webkit-background-clip: text;
 
