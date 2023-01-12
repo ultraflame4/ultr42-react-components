@@ -1,0 +1,30 @@
+
+.DnDContainer{
+    display: flex;
+}
+
+.DnDItemContainer{
+    padding: 1em;
+    border: 1px solid black;
+}
+
+.DnDItemContainer:hover{
+    background: red;
+}
+.DnDItemContainer[dragover]{
+    background: blue;
+}
+
+.DnDItem{
+    --x:0;
+    --y:0;
+    cursor: grab;
+    background: green;
+    user-select: none;
+    transform: translate(var(--x),var(--y));
+    transition: transform 100ms ease-out;
+}
+
+.DnDItem[dragged]{
+    pointer-events: none;
+}

@@ -25,3 +25,14 @@ export function useOnScreen(ref:MutableRefObject<any>, callack: ()=>void) {
 
 
 }
+
+/**
+ * Converts a position (client) such as mouse client position into relative to a element
+ */
+export function convRelativeElement(element:HTMLElement,x:number,y:number){
+    let box = element.getBoundingClientRect()
+    return {
+        x:x-box.x,
+        y:y-box.y
+    }
+}

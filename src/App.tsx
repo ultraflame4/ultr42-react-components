@@ -1,5 +1,6 @@
 import {TestComponent} from "./components/TestComponent/TestComponent";
 import {TxtCharsFadeIn} from "./components/TextCharacterFadeIn/TxtCharsFadeIn";
+import {DnDItem, DnDItemContainer, DragAndDropContainer} from "./components/DragAndDrop/DragAndDrop";
 
 function App() {
 
@@ -14,6 +15,16 @@ function App() {
             <br/>
 
         </p>
+
+      <DragAndDropContainer>
+        <DnDItemContainer item={p => <DnDItem parent={p}>Test</DnDItem>}/>
+        <DnDItemContainer item={p => <DnDItem parent={p}>Test</DnDItem>}/>
+
+        <DnDItemContainer />
+        <DnDItemContainer />
+
+      </DragAndDropContainer>
+
         <br/>
         <br/>
         <br/>
