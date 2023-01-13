@@ -156,6 +156,7 @@ export interface DragAndDropContainerProps<T> {
     itemClass?: string
     /**Class name for DnDItemContainer for styling*/
     itemContainerClass?: string
+    className?:string
     /**
      * This callback gives you back the itemContainers,
      * allowing you to control how they are displayed. Eg. adding items between the containers
@@ -219,7 +220,7 @@ export function DragAndDropContainer<T>(props: DragAndDropContainerProps<T>) {
             draggedItemIndex: null,
             reOrderItem: ReOrderItems
         }}>
-            <div className={classes.DnDContainer}>
+            <div className={`${classes.DnDContainer} ${props.className??''}`}>
                 {props.env(
                     items?.map((value, index) => {
 
