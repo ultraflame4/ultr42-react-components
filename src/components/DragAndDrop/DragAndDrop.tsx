@@ -140,7 +140,7 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     )
 })
 
-export interface DragAndDropContainerProps {
+export interface DragAndDropContainerProps<T> {
     /**The draggable items to create. null to have empty container*/
     items: Array<React.ReactNode | null>
     /**Class name for DnDItem for styling*/
@@ -151,6 +151,7 @@ export interface DragAndDropContainerProps {
      * This callback gives you back the itemContainers,
      * allowing you to control how they are displayed. Eg. adding items between the containers
      * <br/>**Note that the parent element of where this is mounted will is display:flex**
+     * <br/>**The index of the elements is preserved as it was in items prop**
      */
     env: (itemContainers: React.ReactElement[]) => React.ReactNode
 

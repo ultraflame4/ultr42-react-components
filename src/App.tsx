@@ -21,8 +21,12 @@ function App() {
             env={(itemContainers)=>{
               return(
                   <>
-                    <h1>TEST</h1>
-                    {itemContainers}
+                    {itemContainers.map((value, index) => {
+                      return <>
+                        <h2>{index}.</h2>
+                        {value}
+                      </>
+                    })}
                   </>
               )
             }}
