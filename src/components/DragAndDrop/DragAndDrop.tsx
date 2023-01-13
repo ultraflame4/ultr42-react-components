@@ -140,13 +140,34 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     )
 })
 
-interface DragAndDropContainerProps {
+export interface DragAndDropContainerProps {
+    /**The draggable items to create. null to have empty container*/
     items: Array<React.ReactNode | null>
+    /**Class name for DnDItem for styling*/
     itemClass?: string
+    /**Class name for DnDItemContainer for styling*/
     itemContainerClass?: string
+    /**
+     * This callback gives you back the itemContainers,
+     * allowing you to control how they are displayed. Eg. adding items between the containers
+     * <br/>**Note that the parent element of where this is mounted will is display:flex**
+     */
+    env: (itemContainers: React.ReactElement[]) => React.ReactNode
 
 }
 
+/**
+ * This is my implementation of a DnD system <br/>
+ * It consist of DnDItem(s) and DnDItemContainer(s)<br/>
+ * It is pretty simple, the DnDItem can be dragged in and out of DnDItemContainer(s)<br/>
+ * <br/>
+ * The DragAndDropContainer contains and isolates the different drag and drop systems.
+ * <br/>
+ * This system does not support nested drag and drop containers and items.
+ *
+ * @param props {DragAndDropContainerProps}
+ * @constructor
+ */
 export function DragAndDropContainer(props: DragAndDropContainerProps) {
     const [items, setItems] = useState(props.items)
 
@@ -167,7 +188,7 @@ export function DragAndDropContainer(props: DragAndDropContainerProps) {
             draggedItemIndex: null
         }}>
             <div className={classes.DnDContainer}>
-                {items?.map((value, index) => {
+                {props.env(items?.map((value, index) => {
 
                     return <DnDItemContainer
                         className={props.itemContainerClass}
@@ -177,7 +198,7 @@ export function DragAndDropContainer(props: DragAndDropContainerProps) {
                         item={value === null ? <></> :
                             <DnDItem className={props.itemClass} itemIndex={index}>{value}</DnDItem>}
                         key={index}/>
-                })}
+                }))}
             </div>
         </DnDContext.Provider>
     )

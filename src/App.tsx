@@ -18,7 +18,16 @@ function App() {
 
         <DragAndDropContainer
             items={["A","B","C","D",null,null,null]}
+            env={(itemContainers)=>{
+              return(
+                  <>
+                    <h1>TEST</h1>
+                    {itemContainers}
+                  </>
+              )
+            }}
         />
+
 
         <br/>
         <br/>
