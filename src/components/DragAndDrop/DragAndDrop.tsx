@@ -25,7 +25,7 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
     function onMouseDown(ev: React.MouseEvent) {
         mouseDowned.current = true
         if (!elementRef.current) return;
-        elementRef.current.setAttribute("dragged", "")
+
 
         setTimeout(args => {
             initialRel.current = {x: ev.clientX, y: ev.clientY}
@@ -40,7 +40,7 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
             if (!elementRef.current) return;
             if (!initialRel.current) return;
             if (!dndCtx) return;
-
+            elementRef.current.setAttribute("dragged", "")
             dndCtx.draggedItemIndex = props.itemIndex
             elementRef.current?.style.setProperty("--x", `${ev.clientX - initialRel.current.x}px`);
             elementRef.current?.style.setProperty("--y", `${ev.clientY - initialRel.current.y}px`);
