@@ -164,6 +164,13 @@ export interface DragAndDropContainerProps<T> {
      */
     env: (itemContainers: React.ReactElement[], itemData: Array<T | null>) => React.ReactNode
 
+    /**
+     * This callback is called whenever an element as been dragged to another container
+     * @param newArray The new array containing the itemData in the new arrangement.
+     * @param from Where the element was dragged from
+     * @param to Where the element was dragged to
+     */
+    onReorder?:(newArray:Array<T | null>,from:number,to:number)=>void
 }
 
 /**
@@ -189,6 +196,7 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
             let fromItem = newItems[from]
             newItems[from] = null
             newItems[to] = fromItem
+            props.onReorder?.(newItems,from,to)
             return newItems
         })
     }
