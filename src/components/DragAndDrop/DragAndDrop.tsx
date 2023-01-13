@@ -4,7 +4,7 @@ import React, {MutableRefObject, ReactElement, useContext, useEffect, useRef, us
 
 interface DnDContext {
     draggedItemIndex: number | null // Object that is being dragged
-    reOrderItem: (from:number,to:number)=>void
+    reOrderItem: (from: number, to: number) => void
 }
 
 const DnDContext = React.createContext<DnDContext | null>(null);
@@ -109,8 +109,9 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     function OnDroppedOn() {
         if (!dndCtx) return;
         if (dndCtx.draggedItemIndex === null) return;
+        let draggedIndex=dndCtx.draggedItemIndex
 
-        dndCtx.reOrderItem(dndCtx.draggedItemIndex, props.containerIndex)
+        setTimeout(args => dndCtx.reOrderItem(draggedIndex, props.containerIndex),0)
     }
 
 
@@ -150,7 +151,7 @@ export interface DragAndDropContainerProps<T> {
     /**
      * Tells DragAndDropContainer how to interpret and convert the data into a react node so that it can be rendered
      */
-    itemDataAdapter: (item:T,index:number)=>React.ReactNode
+    itemDataAdapter: (item: T, index: number) => React.ReactNode
     /**Class name for DnDItem for styling*/
     itemClass?: string
     /**Class name for DnDItemContainer for styling*/
@@ -169,7 +170,7 @@ export interface DragAndDropContainerProps<T> {
      * @param from Where the element was dragged from
      * @param to Where the element was dragged to
      */
-    onReorder?:(newArray:Array<T | null>,from:number,to:number)=>void
+    onReorder?: (newArray: Array<T | null>, from: number, to: number) => void
     /**
      * This callback allows you to intercept and override the default behaviour when the item order is being changed
      * @param itemsArray The existing array containing the existing items (has not been reordered)
@@ -177,7 +178,7 @@ export interface DragAndDropContainerProps<T> {
      * @param to Where the element was dragged to
      * @return Returns a new items array that has been reOrdered
      */
-    interceptReorder?:(itemsArray:Array<T | null>,from:number,to:number)=>Array<T | null>
+    interceptReorder?: (itemsArray: Array<T | null>, from: number, to: number) => Array<T | null>
 }
 
 /**
@@ -192,20 +193,23 @@ export interface DragAndDropContainerProps<T> {
  * @param props {DragAndDropContainerProps}
  * @constructor
  */
-export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
+export function DragAndDropContainer<T>(props: DragAndDropContainerProps<T>) {
     const [items, setItems] = useState(props.itemData)
+
     function ReOrderItems(from: number, to: number) {
 
         setItems(prevState => {
-            if (props.interceptReorder){
-                return props.interceptReorder([...prevState],from,to)
+            if (props.interceptReorder) {
+                let newItems = props.interceptReorder([...prevState], from, to)
+                setTimeout(args => props.onReorder?.(newItems, from, to), 0)
+                return newItems
             }
 
             let newItems = [...prevState]
             let fromItem = newItems[from]
             newItems[from] = null
             newItems[to] = fromItem
-            setTimeout(args => props.onReorder?.(newItems,from,to),0)
+            setTimeout(args => props.onReorder?.(newItems, from, to), 0)
             return newItems
         })
     }
@@ -213,7 +217,7 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
     return (
         <DnDContext.Provider value={{
             draggedItemIndex: null,
-            reOrderItem:ReOrderItems
+            reOrderItem: ReOrderItems
         }}>
             <div className={classes.DnDContainer}>
                 {props.env(
@@ -226,7 +230,8 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
                             key={index}>
                             {
                                 value === null ? <></> :
-                                    <DnDItem className={props.itemClass} itemIndex={index}>{props.itemDataAdapter(value,index)}</DnDItem>
+                                    <DnDItem className={props.itemClass}
+                                             itemIndex={index}>{props.itemDataAdapter(value, index)}</DnDItem>
                             }
                         </DnDItemContainer>
                     }),
