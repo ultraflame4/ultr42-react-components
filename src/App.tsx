@@ -16,14 +16,9 @@ function App() {
 
         </p>
 
-      <DragAndDropContainer>
-        <DnDItemContainer item={p => <DnDItem parent={p}>Test</DnDItem>}/>
-        <DnDItemContainer item={p => <DnDItem parent={p}>Test</DnDItem>}/>
-
-        <DnDItemContainer />
-        <DnDItemContainer />
-
-      </DragAndDropContainer>
+      <DragAndDropContainer
+          items={["A","B","C","D",null,null,null]}
+      />
 
         <br/>
         <br/>

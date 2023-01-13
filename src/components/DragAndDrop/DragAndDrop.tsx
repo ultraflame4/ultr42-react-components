@@ -1,70 +1,68 @@
 import {convRelativeElement, defComponent} from "../utils";
 import classes from "./DragAndDrop.module.css";
-import React, {MutableRefObject, useContext, useEffect, useRef, useState} from "react";
+import React, {MutableRefObject, ReactElement, useContext, useEffect, useRef, useState} from "react";
 
-interface DnDContext{
-    draggedItem:object|null // Object that is being dragged
+interface DnDContext {
+    draggedItemIndex: number | null // Object that is being dragged
+
 }
 
-const DnDContext = React.createContext<DnDContext|null>(null);
-interface DnDItemParent{
-    setItem(ref:MutableRefObject<any>):void;
+const DnDContext = React.createContext<DnDContext | null>(null);
+
+
+interface DnDItemProps {
+    itemIndex: number
 }
 
-interface DnDItemProps{
-    parent:DnDItemParent
-}
 export const DnDItem = defComponent<DnDItemProps>(props => {
     const mouseDowned = useRef(false)
     const elementRef = useRef<HTMLDivElement>(null)
-    const initialRel = useRef<{ x:number,y:number }|null>(null)
+    const initialRel = useRef<{ x: number, y: number } | null>(null)
     const dndCtx = useContext(DnDContext)
 
 
-    function onMouseDown(ev:React.MouseEvent){
-        mouseDowned.current=true
+    function onMouseDown(ev: React.MouseEvent) {
+        mouseDowned.current = true
         if (!elementRef.current) return;
-        elementRef.current.setAttribute("dragged","")
+        elementRef.current.setAttribute("dragged", "")
 
-        setTimeout(args => {initialRel.current= {x:ev.clientX,y:ev.clientY}},0)
+        setTimeout(args => {
+            initialRel.current = {x: ev.clientX, y: ev.clientY}
+        }, 0)
     }
 
-    useEffect(() => {
-        props.parent.setItem(elementRef)
-    },[props.parent])
-
 
     useEffect(() => {
 
-        function moveCallback(ev:MouseEvent){
+        function moveCallback(ev: MouseEvent) {
             if (!mouseDowned.current) return
             if (!elementRef.current) return;
             if (!initialRel.current) return;
             if (!dndCtx) return;
 
-            dndCtx.draggedItem=elementRef.current
-
-            elementRef.current?.style.setProperty("--x",`${ev.clientX-initialRel.current.x}px`);
-            elementRef.current?.style.setProperty("--y",`${ev.clientY-initialRel.current.y}px`);
+            dndCtx.draggedItemIndex = props.itemIndex
+            elementRef.current?.style.setProperty("--x", `${ev.clientX - initialRel.current.x}px`);
+            elementRef.current?.style.setProperty("--y", `${ev.clientY - initialRel.current.y}px`);
             // elementRef.current?.style.setProperty("--x",`${ev.clientX}px`);
             // elementRef.current?.style.setProperty("--y",`${ev.clientY}px`);
         }
 
-        function onMouseUp(ev:MouseEvent){
+        function onMouseUp(ev: MouseEvent) {
             if (!dndCtx) return;
+            setTimeout(() => {dndCtx.draggedItemIndex = null},0)
 
-            dndCtx.draggedItem=null
-            mouseDowned.current=false
+            mouseDowned.current = false
             elementRef.current?.style.removeProperty("--x");
             elementRef.current?.style.removeProperty("--y");
+
             elementRef.current?.removeAttribute("dragged")
         }
 
-        window.addEventListener("mousemove",moveCallback)
-        window.addEventListener("mouseup",onMouseUp)
-        return ()=>{
-            window.removeEventListener("mousemove",moveCallback)
-            window.removeEventListener("mouseup",onMouseUp)
+        window.addEventListener("mousemove", moveCallback)
+        window.addEventListener("mouseup", onMouseUp)
+        return () => {
+            window.removeEventListener("mousemove", moveCallback)
+            window.removeEventListener("mouseup", onMouseUp)
         }
     })
 
@@ -75,69 +73,102 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
     )
 })
 
-interface DnDItemContainerProps{
-    item?:(p:DnDItemParent)=>React.ReactElement
+interface DnDItemContainerProps {
+    currentItemIndex: number | null
+    containerIndex: number
+    item: React.ReactNode
+    onDropItem:(from:number,to:number)=>void
 }
 
 export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
-    const item = useRef<MutableRefObject<any>|null>(null)
-    const containerRef = useRef<HTMLElement>(null)
-
-    let child = props.item?.({
-        setItem(ref: React.MutableRefObject<any>) {
-            item.current=ref
-        }
-    })
     const dndCtx = useContext(DnDContext)
+    const isDroppable = useRef(false)
+    const containerRef = useRef<HTMLDivElement>(null)
 
-    function isDraggedItemMine(){
-        if (!item?.current){
-            return false
+    function isDraggedItemMine() {
+        return props.currentItemIndex == dndCtx?.draggedItemIndex
+    }
+
+    function onHover(ev: React.MouseEvent) {
+
+        if (!isDraggedItemMine() && dndCtx!.draggedItemIndex !== null && props.currentItemIndex === null) {
+
+            isDroppable.current = true
+            containerRef.current?.setAttribute("dragover", "")
         }
-        return item?.current?.current==dndCtx?.draggedItem
     }
 
-    function onHover(ev:React.MouseEvent){
+    function onMouseLeave(ev: React.MouseEvent) {
+
         containerRef.current?.removeAttribute("dragover")
-
-        if (!isDraggedItemMine() && dndCtx!.draggedItem!==null && item.current===null){
-            containerRef.current?.setAttribute("dragover","")
-        }
+        isDroppable.current = false
     }
 
-    function onMouseLeave(ev:React.MouseEvent){
-        containerRef.current?.removeAttribute("dragover")
+    function OnDroppedOn() {
+        if (!dndCtx) return;
+        if (dndCtx.draggedItemIndex===null) return;
+
+        props.onDropItem(dndCtx.draggedItemIndex,props.containerIndex)
     }
+
 
     useEffect(() => {
 
-        function onMouseUp(ev:MouseEvent){
+        function onMouseUp(ev: MouseEvent) {
             if (!dndCtx) return;
             containerRef.current?.removeAttribute("dragover")
+            if (isDroppable.current) {
+                OnDroppedOn()
+            }
         }
 
-        window.addEventListener("mouseup",onMouseUp)
-        return ()=>{
-            window.removeEventListener("mouseup",onMouseUp)
+        window.addEventListener("mouseup", onMouseUp)
+        return () => {
+            window.removeEventListener("mouseup", onMouseUp)
         }
     })
 
     return (
         <div className={classes.DnDItemContainer} onMouseOver={onHover} onMouseLeave={onMouseLeave} ref={containerRef}>
-            {child}
+            {props.item}
         </div>
     )
 })
-export const DragAndDropContainer = defComponent(props => {
 
+interface DragAndDropContainerProps {
+    items: Array<React.ReactNode | null>
+}
+
+export function DragAndDropContainer(props: DragAndDropContainerProps) {
+    const [items, setItems] = useState(props.items)
+
+    function ReOrderItems(from:number, to:number){
+
+        setItems(prevState => {
+
+            let newItems =  [...prevState]
+            let fromItem = newItems[from]
+            newItems[from] = null
+            newItems[to]=fromItem
+            return newItems
+        })
+    }
 
     return (
         <DnDContext.Provider value={{
-            draggedItem:null
+            draggedItemIndex: null
         }}>
             <div className={classes.DnDContainer}>
-                {props.children}
+                {items?.map((value, index) => {
+
+                    return <DnDItemContainer
+                        onDropItem={ReOrderItems}
+                        containerIndex={index}
+                        currentItemIndex={value===null?null:index}
+                        item={value===null?<></>:<DnDItem itemIndex={index}>{value}</DnDItem>}
+                        key={index}/>
+                })}
             </div>
         </DnDContext.Provider>
     )
-})
+}

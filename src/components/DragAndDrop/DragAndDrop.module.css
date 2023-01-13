@@ -6,6 +6,8 @@
 .DnDItemContainer{
     padding: 1em;
     border: 1px solid black;
+
+    transition: all 200ms ease;
 }
 
 .DnDItemContainer:hover{
@@ -26,5 +28,6 @@
 }
 
 .DnDItem[dragged]{
+    position: fixed;
     pointer-events: none;
 }
