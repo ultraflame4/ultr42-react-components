@@ -79,7 +79,6 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
 interface DnDItemContainerProps {
     currentItemIndex: number | null
     containerIndex: number
-    item: React.ReactNode
     onDropItem: (from: number, to: number) => void
     className?: string
 }
@@ -135,14 +134,20 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     return (
         <div className={`${classes.DnDItemContainer} ${props.className ?? ''}`} onMouseOver={onHover}
              onMouseLeave={onMouseLeave} ref={containerRef}>
-            {props.item}
+            {props.children}
         </div>
     )
 })
 
-export interface DragAndDropContainerProps {
-    /**The draggable items to create. null to have empty container*/
-    items: Array<React.ReactNode | null>
+export interface DragAndDropContainerProps<T extends React.ReactNode> {
+    /**
+     * The data of the items to create.<br/>
+     * This also directly correspond to the number of containers.<br/>
+     * The number of containers is the number of items in the itemData.<br/>
+     * Each container will use the data of each item in itemData<br/>
+     * Put null item to have empty container<br/>
+     * */
+    itemData: Array<T | null>
     /**Class name for DnDItem for styling*/
     itemClass?: string
     /**Class name for DnDItemContainer for styling*/
@@ -153,7 +158,7 @@ export interface DragAndDropContainerProps {
      * <br/>**Note that the parent element of where this is mounted will is display:flex**
      * <br/>**The index of the elements is preserved as it was in items prop**
      */
-    env: (itemContainers: React.ReactElement[]) => React.ReactNode
+    env: (itemContainers: React.ReactElement[], itemData: Array<T | null>) => React.ReactNode
 
 }
 
@@ -169,8 +174,8 @@ export interface DragAndDropContainerProps {
  * @param props {DragAndDropContainerProps}
  * @constructor
  */
-export function DragAndDropContainer(props: DragAndDropContainerProps) {
-    const [items, setItems] = useState(props.items)
+export function DragAndDropContainer<T extends React.ReactNode>(props: DragAndDropContainerProps<T>) {
+    const [items, setItems] = useState(props.itemData)
 
     function ReOrderItems(from: number, to: number) {
 
@@ -189,17 +194,24 @@ export function DragAndDropContainer(props: DragAndDropContainerProps) {
             draggedItemIndex: null
         }}>
             <div className={classes.DnDContainer}>
-                {props.env(items?.map((value, index) => {
+                {props.env(
+                    items?.map((value, index) => {
 
-                    return <DnDItemContainer
-                        className={props.itemContainerClass}
-                        onDropItem={ReOrderItems}
-                        containerIndex={index}
-                        currentItemIndex={value === null ? null : index}
-                        item={value === null ? <></> :
-                            <DnDItem className={props.itemClass} itemIndex={index}>{value}</DnDItem>}
-                        key={index}/>
-                }))}
+                        return <DnDItemContainer
+                            className={props.itemContainerClass}
+                            onDropItem={ReOrderItems}
+                            containerIndex={index}
+                            currentItemIndex={value === null ? null : index}
+
+                            key={index}>
+                            {
+                                value === null ? <></> :
+                                    <DnDItem className={props.itemClass} itemIndex={index}>{value}</DnDItem>
+                            }
+                        </DnDItemContainer>
+                    }),
+                    items
+                )}
             </div>
         </DnDContext.Provider>
     )
