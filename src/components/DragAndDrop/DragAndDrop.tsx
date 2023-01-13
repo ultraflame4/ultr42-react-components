@@ -140,7 +140,7 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     )
 })
 
-export interface DragAndDropContainerProps<T> {
+export interface DragAndDropContainerProps {
     /**The draggable items to create. null to have empty container*/
     items: Array<React.ReactNode | null>
     /**Class name for DnDItem for styling*/
