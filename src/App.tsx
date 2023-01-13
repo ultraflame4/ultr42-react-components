@@ -1,6 +1,7 @@
 import {TestComponent} from "./components/TestComponent/TestComponent";
 import {TxtCharsFadeIn} from "./components/TextCharacterFadeIn/TxtCharsFadeIn";
 import {DnDItem, DnDItemContainer, DragAndDropContainer} from "./components/DragAndDrop/DragAndDrop";
+import {DnDList} from "./components/DnDList/DnDList";
 
 function App() {
 
@@ -19,11 +20,11 @@ function App() {
             <DragAndDropContainer
                 itemData={["A", "B", "C", "D", null, null, null]}
                 itemDataAdapter={(item, index) => item}
-                env={(itemContainers,itemData) => {
+                env={(itemContainers, itemData) => {
                     return (<>
                         {
                             itemContainers.map((value, index) => {
-                                return <div key={index} style={{display:"flex"}}>
+                                return <div key={index} style={{display: "flex"}}>
                                     <h2>{index}.</h2>
                                     {value}
                                 </div>
@@ -35,11 +36,7 @@ function App() {
             />
 
 
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+            <DnDList items={["A", "B", "C", "D"]} itemAdapter={item => item}/>
             <br/>
             <br/>
             <br/>

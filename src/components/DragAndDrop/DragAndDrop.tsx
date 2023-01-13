@@ -187,7 +187,7 @@ export interface DragAndDropContainerProps<T> {
  */
 export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
     const [items, setItems] = useState(props.itemData)
-
+    console.log(props.itemData,"D")
     function ReOrderItems(from: number, to: number) {
 
         setItems(prevState => {
@@ -196,7 +196,7 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
             let fromItem = newItems[from]
             newItems[from] = null
             newItems[to] = fromItem
-            props.onReorder?.(newItems,from,to)
+            setTimeout(args => props.onReorder?.(newItems,from,to),0)
             return newItems
         })
     }
