@@ -1,0 +1,32 @@
+
+.ItemContainer{
+    padding: 0.5em 1em;
+    border: none;
+}
+
+.ItemContainer:has(>[dragged]){
+    padding: 0 1em;
+}
+
+.ItemContainer[dragover]{
+    padding: 3em 1em;
+}
+
+.ItemList{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.ItemClass{
+    width: 200px;
+    height: 4rem;
+    z-index: 100;
+    border-radius: 0.5em;
+    background: white;
+    filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.5));
+}
+
+.ItemClass[dragged]{
+    /*position: relative;*/
+}
