@@ -18,10 +18,15 @@ export function DnDList<T>(props: DnDListProps<T>) {
 
 
     function onReorder(itemsArray:any[],from:number,to:number){
-        // let a = newArray.filter(value => value!==null)
-        // console.log(processItems(a))
+
         // setItems([...processItems(a)])
-        return itemsArray
+        let fromItem = itemsArray[from]
+
+        itemsArray[from] = null
+        itemsArray[to] = fromItem
+        let a = itemsArray.filter(value => value!==null)
+
+        return processItems(a)
     }
 
 
