@@ -18,6 +18,7 @@ function App() {
 
             <DragAndDropContainer
                 itemData={["A", "B", "C", "D", null, null, null]}
+                itemDataAdapter={(item, index) => item}
                 env={(itemContainers,itemData) => {
                     return (<>
                         {

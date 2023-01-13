@@ -139,7 +139,7 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     )
 })
 
-export interface DragAndDropContainerProps<T extends React.ReactNode> {
+export interface DragAndDropContainerProps<T> {
     /**
      * The data of the items to create.<br/>
      * This also directly correspond to the number of containers.<br/>
@@ -148,6 +148,10 @@ export interface DragAndDropContainerProps<T extends React.ReactNode> {
      * Put null item to have empty container<br/>
      * */
     itemData: Array<T | null>
+    /**
+     * Tells DragAndDropContainer how to interpret and convert the data into a react node so that it can be rendered
+     */
+    itemDataAdapter: (item:T,index:number)=>React.ReactNode
     /**Class name for DnDItem for styling*/
     itemClass?: string
     /**Class name for DnDItemContainer for styling*/
@@ -174,7 +178,7 @@ export interface DragAndDropContainerProps<T extends React.ReactNode> {
  * @param props {DragAndDropContainerProps}
  * @constructor
  */
-export function DragAndDropContainer<T extends React.ReactNode>(props: DragAndDropContainerProps<T>) {
+export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
     const [items, setItems] = useState(props.itemData)
 
     function ReOrderItems(from: number, to: number) {
@@ -206,7 +210,7 @@ export function DragAndDropContainer<T extends React.ReactNode>(props: DragAndDr
                             key={index}>
                             {
                                 value === null ? <></> :
-                                    <DnDItem className={props.itemClass} itemIndex={index}>{value}</DnDItem>
+                                    <DnDItem className={props.itemClass} itemIndex={index}>{props.itemDataAdapter(value,index)}</DnDItem>
                             }
                         </DnDItemContainer>
                     }),
