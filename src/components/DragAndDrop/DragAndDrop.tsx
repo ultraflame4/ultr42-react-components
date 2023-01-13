@@ -226,7 +226,7 @@ export function DragAndDropContainer<T>(props: DragAndDropContainerProps<T>) {
                         return <DnDItemContainer
                             currentItemIndex={value === null ? null : index}
                             containerIndex={index}
-
+                            className={props.itemContainerClass}
                             key={index}>
                             {
                                 value === null ? <></> :
