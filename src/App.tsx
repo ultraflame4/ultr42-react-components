@@ -16,9 +16,9 @@ function App() {
 
         </p>
 
-      <DragAndDropContainer
-          items={["A","B","C","D",null,null,null]}
-      />
+        <DragAndDropContainer
+            items={["A","B","C","D",null,null,null]}
+        />
 
         <br/>
         <br/>

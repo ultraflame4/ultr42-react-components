@@ -12,6 +12,7 @@ const DnDContext = React.createContext<DnDContext | null>(null);
 
 interface DnDItemProps {
     itemIndex: number
+    className?: string
 }
 
 export const DnDItem = defComponent<DnDItemProps>(props => {
@@ -49,7 +50,9 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
 
         function onMouseUp(ev: MouseEvent) {
             if (!dndCtx) return;
-            setTimeout(() => {dndCtx.draggedItemIndex = null},0)
+            setTimeout(() => {
+                dndCtx.draggedItemIndex = null
+            }, 0)
 
             mouseDowned.current = false
             elementRef.current?.style.removeProperty("--x");
@@ -67,7 +70,7 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
     })
 
     return (
-        <div className={classes.DnDItem} onMouseDown={onMouseDown} ref={elementRef}>
+        <div className={`${classes.DnDItem} ${props.className ?? ''}`} onMouseDown={onMouseDown} ref={elementRef}>
             {props.children}
         </div>
     )
@@ -77,7 +80,8 @@ interface DnDItemContainerProps {
     currentItemIndex: number | null
     containerIndex: number
     item: React.ReactNode
-    onDropItem:(from:number,to:number)=>void
+    onDropItem: (from: number, to: number) => void
+    className?: string
 }
 
 export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
@@ -106,9 +110,9 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
 
     function OnDroppedOn() {
         if (!dndCtx) return;
-        if (dndCtx.draggedItemIndex===null) return;
+        if (dndCtx.draggedItemIndex === null) return;
 
-        props.onDropItem(dndCtx.draggedItemIndex,props.containerIndex)
+        props.onDropItem(dndCtx.draggedItemIndex, props.containerIndex)
     }
 
 
@@ -129,7 +133,8 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     })
 
     return (
-        <div className={classes.DnDItemContainer} onMouseOver={onHover} onMouseLeave={onMouseLeave} ref={containerRef}>
+        <div className={`${classes.DnDItemContainer} ${props.className ?? ''}`} onMouseOver={onHover}
+             onMouseLeave={onMouseLeave} ref={containerRef}>
             {props.item}
         </div>
     )
@@ -137,19 +142,22 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
 
 interface DragAndDropContainerProps {
     items: Array<React.ReactNode | null>
+    itemClass?: string
+    itemContainerClass?: string
+
 }
 
 export function DragAndDropContainer(props: DragAndDropContainerProps) {
     const [items, setItems] = useState(props.items)
 
-    function ReOrderItems(from:number, to:number){
+    function ReOrderItems(from: number, to: number) {
 
         setItems(prevState => {
 
-            let newItems =  [...prevState]
+            let newItems = [...prevState]
             let fromItem = newItems[from]
             newItems[from] = null
-            newItems[to]=fromItem
+            newItems[to] = fromItem
             return newItems
         })
     }
@@ -162,10 +170,12 @@ export function DragAndDropContainer(props: DragAndDropContainerProps) {
                 {items?.map((value, index) => {
 
                     return <DnDItemContainer
+                        className={props.itemContainerClass}
                         onDropItem={ReOrderItems}
                         containerIndex={index}
-                        currentItemIndex={value===null?null:index}
-                        item={value===null?<></>:<DnDItem itemIndex={index}>{value}</DnDItem>}
+                        currentItemIndex={value === null ? null : index}
+                        item={value === null ? <></> :
+                            <DnDItem className={props.itemClass} itemIndex={index}>{value}</DnDItem>}
                         key={index}/>
                 })}
             </div>
