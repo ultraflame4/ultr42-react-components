@@ -7,36 +7,35 @@ interface DnDListProps<T> {
 }
 
 export function DnDList<T>(props: DnDListProps<T>) {
-    const [items,setItems] = useState<Array<React.ReactNode|null>>([])
+    const [items, setItems] = useState(processItems(props.items))
 
-    useEffect(() => {
-        setProcessedItem(props.items)
-    },[props.items])
-    function setProcessedItem(_items:T[]){
-        let zipped = _items.map((value, index) => [null, props.itemAdapter(value, index)])
+    function processItems(_items:T[]){
+        let zipped = _items.map((value, index) => [null, value])
         let flattened = zipped.flat()
         flattened.push(null)
-        setItems(flattened)
-
+        return flattened
     }
-    console.log(items)
-    function onReorder(newArray:any[]){
-        let a = newArray.filter(value => value!==null)
 
-        setProcessedItem(a)
+
+    function onReorder(itemsArray:any[],from:number,to:number){
+        // let a = newArray.filter(value => value!==null)
+        // console.log(processItems(a))
+        // setItems([...processItems(a)])
+        return itemsArray
     }
+
 
     return (
         <DragAndDropContainer
             itemData={items}
-            itemDataAdapter={(item, index) => item}
+            itemDataAdapter={(item, index) => props.itemAdapter(item, index)}
             env={(itemContainers, itemData) => {
-                console.log(itemData)
+
                 return <>
                     {itemContainers}
                 </>
             }}
-            onReorder={onReorder}
+            interceptReorder={onReorder}
         />
     )
 }

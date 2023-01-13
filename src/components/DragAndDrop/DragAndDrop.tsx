@@ -170,6 +170,14 @@ export interface DragAndDropContainerProps<T> {
      * @param to Where the element was dragged to
      */
     onReorder?:(newArray:Array<T | null>,from:number,to:number)=>void
+    /**
+     * This callback allows you to intercept and override the default behaviour when the item order is being changed
+     * @param itemsArray The existing array containing the existing items (has not been reordered)
+     * @param from Where the element was dragged from
+     * @param to Where the element was dragged to
+     * @return Returns a new items array that has been reOrdered
+     */
+    interceptReorder?:(itemsArray:Array<T | null>,from:number,to:number)=>Array<T | null>
 }
 
 /**
@@ -189,6 +197,9 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
     function ReOrderItems(from: number, to: number) {
 
         setItems(prevState => {
+            if (props.interceptReorder){
+                return props.interceptReorder([...prevState],from,to)
+            }
 
             let newItems = [...prevState]
             let fromItem = newItems[from]

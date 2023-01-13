@@ -36,7 +36,7 @@ function App() {
             />
 
 
-            {/*<DnDList items={["A", "B", "C", "D"]} itemAdapter={item => item}/>*/}
+            <DnDList items={["A", "B", "C", "D"]} itemAdapter={item => item}/>
             <br/>
             <br/>
             <br/>
