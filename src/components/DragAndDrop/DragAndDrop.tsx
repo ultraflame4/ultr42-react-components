@@ -4,7 +4,7 @@ import React, {MutableRefObject, ReactElement, useContext, useEffect, useRef, us
 
 interface DnDContext {
     draggedItemIndex: number | null // Object that is being dragged
-
+    reOrderItem: (from:number,to:number)=>void
 }
 
 const DnDContext = React.createContext<DnDContext | null>(null);
@@ -79,7 +79,6 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
 interface DnDItemContainerProps {
     currentItemIndex: number | null
     containerIndex: number
-    onDropItem: (from: number, to: number) => void
     className?: string
 }
 
@@ -111,7 +110,7 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
         if (!dndCtx) return;
         if (dndCtx.draggedItemIndex === null) return;
 
-        props.onDropItem(dndCtx.draggedItemIndex, props.containerIndex)
+        dndCtx.reOrderItem(dndCtx.draggedItemIndex, props.containerIndex)
     }
 
 
@@ -187,7 +186,6 @@ export interface DragAndDropContainerProps<T> {
  */
 export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
     const [items, setItems] = useState(props.itemData)
-    console.log(props.itemData,"D")
     function ReOrderItems(from: number, to: number) {
 
         setItems(prevState => {
@@ -203,17 +201,16 @@ export function DragAndDropContainer<T >(props: DragAndDropContainerProps<T>) {
 
     return (
         <DnDContext.Provider value={{
-            draggedItemIndex: null
+            draggedItemIndex: null,
+            reOrderItem:ReOrderItems
         }}>
             <div className={classes.DnDContainer}>
                 {props.env(
                     items?.map((value, index) => {
 
                         return <DnDItemContainer
-                            className={props.itemContainerClass}
-                            onDropItem={ReOrderItems}
-                            containerIndex={index}
                             currentItemIndex={value === null ? null : index}
+                            containerIndex={index}
 
                             key={index}>
                             {
