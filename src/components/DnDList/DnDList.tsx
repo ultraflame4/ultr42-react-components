@@ -1,6 +1,6 @@
 import React, {PropsWithChildren, useEffect, useState} from "react";
 import {DragAndDropContainer} from "../DragAndDrop/DragAndDrop";
-import classes from "./DnDList.module.css";
+import "./DnDList.css";
 interface DnDListProps<T> {
     items: T[]
     itemAdapter: (item: T, index: number) => React.ReactNode
@@ -31,9 +31,9 @@ export function DnDList<T>(props: DnDListProps<T>) {
     return (
         <DragAndDropContainer
             itemData={items}
-            className={classes.ItemList}
-            itemContainerClass={classes.ItemContainer}
-            itemClass={classes.ItemClass}
+            className={"ItemList"}
+            itemContainerClass={"ItemContainer"}
+            itemClass={"ItemClass"}
             itemDataAdapter={(item, index) => props.itemAdapter(item, index)}
             env={(itemContainers, itemData) => {
 

@@ -1,5 +1,5 @@
 import {convRelativeElement, defComponent} from "../utils";
-import classes from "./DragAndDrop.module.css";
+import "./DragAndDrop.css";
 import React, {MutableRefObject, ReactElement, useContext, useEffect, useRef, useState} from "react";
 
 interface DnDContext {
@@ -70,7 +70,7 @@ export const DnDItem = defComponent<DnDItemProps>(props => {
     })
 
     return (
-        <div className={`${classes.DnDItem} ${props.className ?? ''}`} onMouseDown={onMouseDown} ref={elementRef}>
+        <div className={`DnDItem ${props.className ?? ''}`} onMouseDown={onMouseDown} ref={elementRef}>
             {props.children}
         </div>
     )
@@ -132,7 +132,7 @@ export const DnDItemContainer = defComponent<DnDItemContainerProps>(props => {
     })
 
     return (
-        <div className={`${classes.DnDItemContainer} ${props.className ?? ''}`} onMouseOver={onHover}
+        <div className={`DnDItemContainer ${props.className ?? ''}`} onMouseOver={onHover}
              onMouseLeave={onMouseLeave} ref={containerRef}>
             {props.children}
         </div>
@@ -220,7 +220,7 @@ export function DragAndDropContainer<T>(props: DragAndDropContainerProps<T>) {
             draggedItemIndex: null,
             reOrderItem: ReOrderItems
         }}>
-            <div className={`${classes.DnDContainer} ${props.className??''}`}>
+            <div className={`DnDContainer ${props.className??''}`}>
                 {props.env(
                     items?.map((value, index) => {
 
