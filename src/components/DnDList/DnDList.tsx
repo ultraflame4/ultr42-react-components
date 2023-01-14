@@ -4,6 +4,15 @@ import classes from "./DnDList.module.css";
 interface DnDListProps<T> {
     items: T[]
     itemAdapter: (item: T, index: number) => React.ReactNode
+    itemClass?: string
+    /**Class name for DnDItemContainer for styling*/
+    itemContainerClass?: string
+    className?:string
+    /**
+     * This callback is called whenever an element as been dragged to another container
+     * @param newArray The new array containing the itemData in the new arrangement.
+     */
+    onReorder?: (newArray: Array<T | null>) => void
 }
 
 export function DnDList<T>(props: DnDListProps<T>) {
@@ -23,7 +32,7 @@ export function DnDList<T>(props: DnDListProps<T>) {
         itemsArray[from] = null
         itemsArray[to] = fromItem
         let a = itemsArray.filter(value => value!==null)
-
+        setTimeout(args => props.onReorder?.(a),0)
         return processItems(a)
     }
 
@@ -31,9 +40,9 @@ export function DnDList<T>(props: DnDListProps<T>) {
     return (
         <DragAndDropContainer
             itemData={items}
-            className={classes.ItemList}
-            itemContainerClass={classes.ItemContainer}
-            itemClass={classes.ItemClass}
+            className={`${classes.ItemList} ${props.className}`}
+            itemContainerClass={`${classes.ItemContainer} ${props.itemContainerClass}`}
+            itemClass={`${classes.ItemClass} ${props.itemClass}`}
             itemDataAdapter={(item, index) => props.itemAdapter(item, index)}
             env={(itemContainers, itemData) => {
 
