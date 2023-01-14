@@ -21,7 +21,7 @@ export default defineConfig({
             fileName: (format) => `ultr42-react-components.${format}.js`,
         },
         outDir: "./lib",
-
+        cssCodeSplit:true,
         rollupOptions: {
             external: ["react", "react-dom"]
         }
